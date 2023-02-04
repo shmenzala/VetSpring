@@ -9,24 +9,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 import org.hibernate.HibernateException;
+import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.type.Type;
 
 /**
  *
  * @author shmen
  */
-public class StringKeyGenerator implements IdentifierGenerator{
+public class StringKeyGenerator implements IdentifierGenerator, Configurable{
 
-    private String sqcName;
-    
+    private String sqcName = "";
+
     @Override
     public Serializable generate(SharedSessionContractImplementor ssci, Object o) throws HibernateException {
         Connection connection = ssci.connection();
         PreparedStatement ps = null;
         String result = "";
-        
+
         try {
             // Oracle-specific code to query a sequence
             ps = connection.prepareStatement("SELECT " + sqcName + ".nextval AS PERSONA_PK FROM dual");
@@ -51,5 +56,10 @@ public class StringKeyGenerator implements IdentifierGenerator{
         }
         return result;
     }
-    
+
+    @Override
+    public void configure(Type type, Properties prprts, ServiceRegistry sr) throws MappingException {
+        sqcName = prprts.getProperty("sqcName");
+    }
+
 }
