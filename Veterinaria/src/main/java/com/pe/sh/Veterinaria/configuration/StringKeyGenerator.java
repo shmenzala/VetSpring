@@ -19,6 +19,8 @@ import org.hibernate.id.IdentifierGenerator;
  */
 public class StringKeyGenerator implements IdentifierGenerator{
 
+    private String sqcName;
+    
     @Override
     public Serializable generate(SharedSessionContractImplementor ssci, Object o) throws HibernateException {
         Connection connection = ssci.connection();
@@ -27,7 +29,7 @@ public class StringKeyGenerator implements IdentifierGenerator{
         
         try {
             // Oracle-specific code to query a sequence
-            ps = connection.prepareStatement("SELECT PERSONA_INC.nextval AS PERSONA_PK FROM dual");
+            ps = connection.prepareStatement("SELECT " + sqcName + ".nextval AS PERSONA_PK FROM dual");
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {

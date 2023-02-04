@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  *
@@ -23,7 +24,8 @@ public class Persona implements Serializable{
     @Id
     @Column(name = "codigope")
     @GeneratedValue(generator = "inc_seqPer")
-    @GenericGenerator(name = "inc_seqPer", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator")
+    @GenericGenerator(name = "inc_seqPer", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
+            parameters = {@Parameter(name = "sqcName", value = "PERSONA_INC")})
     @SequenceGenerator(name = "inc_seqPer", sequenceName = "PERSONA_INC", initialValue = 1, allocationSize = 1)
     private String id;
     
