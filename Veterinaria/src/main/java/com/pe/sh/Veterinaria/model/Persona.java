@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -18,6 +19,7 @@ import org.hibernate.annotations.Parameter;
  * @author shmen
  */
 @Entity
+@Table(name = "PERSONA")
 public class Persona implements Serializable{
     
     
@@ -25,7 +27,8 @@ public class Persona implements Serializable{
     @Column(name = "codigope")
     @GeneratedValue(generator = "inc_seqPer")
     @GenericGenerator(name = "inc_seqPer", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
-            parameters = {@Parameter(name = "sqcName", value = "PERSONA_INC")})
+            parameters = {@Parameter(name = "sqcName", value = "PERSONA_INC"),
+                          @Parameter(name = "identificator_id", value = "PE")})
     @SequenceGenerator(name = "inc_seqPer", sequenceName = "PERSONA_INC", initialValue = 1, allocationSize = 1)
     private String id;
     

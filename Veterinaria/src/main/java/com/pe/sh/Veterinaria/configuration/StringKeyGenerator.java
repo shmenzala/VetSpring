@@ -25,6 +25,7 @@ import org.hibernate.type.Type;
 public class StringKeyGenerator implements IdentifierGenerator, Configurable{
 
     private String sqcName = "";
+    private String identificator_id = "";
 
     @Override
     public Serializable generate(SharedSessionContractImplementor ssci, Object o) throws HibernateException {
@@ -41,7 +42,7 @@ public class StringKeyGenerator implements IdentifierGenerator, Configurable{
                 int pk = rs.getInt("PERSONA_PK");
 
                 // Convert to a String
-                result = "CL" + Integer.toString(pk);
+                result = identificator_id + Integer.toString(pk);
             }
         } catch (SQLException e) {
             throw new HibernateException("No se puede generar la Primary Key.");
@@ -60,6 +61,7 @@ public class StringKeyGenerator implements IdentifierGenerator, Configurable{
     @Override
     public void configure(Type type, Properties prprts, ServiceRegistry sr) throws MappingException {
         sqcName = prprts.getProperty("sqcName");
+        identificator_id = prprts.getProperty("identificator_id");
     }
 
 }
