@@ -7,6 +7,7 @@ package com.pe.sh.Veterinaria.controller;
 import com.pe.sh.Veterinaria.dto.PersonaDto;
 import com.pe.sh.Veterinaria.service.PersonaService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,12 @@ public class PersonaController {
         personaService.eliminarPersona(id);
         return new ResponseEntity<>("Persona eliminada con éxito", HttpStatus.OK);
     }
+    
+    /*@GetMapping("/roles/{id}")
+    public ResponseEntity<Map<String, Object>> listarPersonasConRoles(@PathVariable("id") String id) {
+        Map<String, Object> res = personaService.getPersonaAndRol(id);
+
+        return ResponseEntity.ok(res);
+    }*/
     
 }

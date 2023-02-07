@@ -44,7 +44,6 @@ public class VeterinariosServiceImpl implements VeterinariosService{
         Veterinarios nuevoVeterinario = veterinariosRepository.save(veterinario);
 
         return mapearDto(nuevoVeterinario);
-
     }
 
     @Override

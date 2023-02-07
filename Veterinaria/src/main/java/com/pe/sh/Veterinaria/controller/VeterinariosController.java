@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/veterinarios")
 public class VeterinariosController {
     
-     @Autowired
-     private VeterinariosService veterinariosService;
+    @Autowired
+    private VeterinariosService veterinariosService;
     
     @GetMapping
     public List<VeterinariosDto> listarVeterinarios(){

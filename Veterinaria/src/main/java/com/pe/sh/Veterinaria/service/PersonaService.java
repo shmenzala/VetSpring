@@ -6,6 +6,7 @@ package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.PersonaDto;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -22,5 +23,7 @@ public interface PersonaService {
     public PersonaDto actualizarPersona(PersonaDto perDto, String id);
     
     public void eliminarPersona(String id);
+    
+    //public Map<String, Object> getPersonaAndRol(String id); 
     
 }

@@ -5,9 +5,15 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.PersonaDto;
+import com.pe.sh.Veterinaria.model.Cliente;
 import com.pe.sh.Veterinaria.model.Persona;
+import com.pe.sh.Veterinaria.model.Veterinarios;
+import com.pe.sh.Veterinaria.repository.ClienteRepository;
 import com.pe.sh.Veterinaria.repository.PersonaRepository;
+import com.pe.sh.Veterinaria.repository.VeterinariosRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +32,12 @@ public class PersonaServiceImpl implements PersonaService{
     @Autowired
     private PersonaRepository personaRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private VeterinariosRepository veterinariosRepository;
+    
     @Override
     public PersonaDto crearPersona(PersonaDto perDto) {
         Persona persona = mapearEntidad(perDto);
@@ -70,6 +82,33 @@ public class PersonaServiceImpl implements PersonaService{
        
         personaRepository.delete(persona);
     }
+    
+    /*@Override
+    public Map<String, Object> getPersonaAndRol(String id) {
+        Map<String, Object> res = new HashMap<>();
+        Persona persona = personaRepository.findById(id).orElseThrow(null);
+        
+        if(persona == null){
+            res.put("Mensaje", "La persona no existe");
+            return res;
+        }
+        
+        res.put("Persona", persona);
+        
+        Cliente cliente = clienteRepository.findById(id).orElse(null);
+        
+        if(cliente == null){
+            res.put("Cliente", "La persona no es un cliente");
+            Veterinarios veterinario = veterinariosRepository.findById(id).orElseThrow(null);
+            res.put("Veterinario", veterinario);
+        }else{
+            res.put("Veterinario", "La persona no es un veterinario");
+            res.put("Cliente", cliente);
+        }
+        
+        return res;
+        
+    }*/
     
     //La ENTIDAD setea los datos provenientes del DTO
     private Persona mapearEntidad(PersonaDto perDto){
