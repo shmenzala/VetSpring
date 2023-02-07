@@ -39,7 +39,7 @@ public class VeterinariosServiceImpl implements VeterinariosService{
         Veterinarios veterinario = mapearEntidad(vetDto);
         
         Persona persona = personaRepository.findById(codigope).orElseThrow(null);
-        veterinario.setPersona(persona);
+        veterinario.setPersonavet(persona);
         
         Veterinarios nuevoVeterinario = veterinariosRepository.save(veterinario);
 
@@ -59,7 +59,7 @@ public class VeterinariosServiceImpl implements VeterinariosService{
         
         Veterinarios veterinario = veterinariosRepository.findById(id).orElseThrow(null);
         
-        if(!veterinario.getPersona().getCodigope().equals(persona.getCodigope())){
+        if(!veterinario.getPersonavet().getCodigope().equals(persona.getCodigope())){
             return mapearDto(veterinario);
         }
         
@@ -72,7 +72,7 @@ public class VeterinariosServiceImpl implements VeterinariosService{
         
         Veterinarios veterinario = veterinariosRepository.findById(id).orElseThrow(null);
         
-        if(!veterinario.getPersona().getCodigope().equals(persona.getCodigope())){
+        if(!veterinario.getPersonavet().getCodigope().equals(persona.getCodigope())){
             return mapearDto(veterinario);
         }
         
@@ -91,7 +91,7 @@ public class VeterinariosServiceImpl implements VeterinariosService{
         
         Veterinarios veterinario = veterinariosRepository.findById(id).orElseThrow(null);
         
-        if(!veterinario.getPersona().getCodigope().equals(persona.getCodigope())){
+        if(!veterinario.getPersonavet().getCodigope().equals(persona.getCodigope())){
             return ;
         }
         

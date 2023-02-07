@@ -42,16 +42,16 @@ public class Veterinarios implements Serializable{
     
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "codigope")
-    private Persona persona;
+    private Persona personavet;
 
     public Veterinarios() {
     }
 
-    public Veterinarios(String id, String anio_cont, float salario, Persona persona) {
+    public Veterinarios(String id, String anio_cont, float salario, Persona personavet) {
         this.id = id;
         this.anio_cont = anio_cont;
         this.salario = salario;
-        this.persona = persona;
+        this.personavet = personavet;
     }
 
     public String getCodigove() {
@@ -78,14 +78,12 @@ public class Veterinarios implements Serializable{
         this.salario = salario;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public Persona getPersonavet() {
+        return personavet;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setPersonavet(Persona personavet) {
+        this.personavet = personavet;
     }
-    
-    
-    
+
 }
