@@ -41,7 +41,7 @@ public class ClienteController {
     }
     
     @GetMapping("/{id}/persona/{codigope}")
-    public ResponseEntity<ClienteDto> obtenercrearClientePorId(@PathVariable(value = "id") String id, @PathVariable(value = "codigope") String codigope){
+    public ResponseEntity<ClienteDto> obtenerClientePorId(@PathVariable(value = "id") String id, @PathVariable(value = "codigope") String codigope){
         ClienteDto cliDto = clienteService.obtenerClientePorId(id, codigope);
         
         return new ResponseEntity<>(cliDto, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class ClienteController {
     @DeleteMapping("/{id}/persona/{codigope}")
     public ResponseEntity<String> eliminarCliente(@PathVariable(value = "id") String id, @PathVariable(value = "codigope") String codigope) {
         clienteService.eliminarCliente(id, codigope);
-        return new ResponseEntity<>("Persona eliminada con éxito", HttpStatus.OK);
+        return new ResponseEntity<>("Cliente eliminado con éxito", HttpStatus.OK);
     }
     
 }

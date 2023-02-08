@@ -41,7 +41,7 @@ public class VeterinariosController {
     }
     
     @GetMapping("/{id}/persona/{codigope}")
-    public ResponseEntity<VeterinariosDto> obtenercrearVeterinarioPorId(@PathVariable(value = "id") String id, @PathVariable(value = "codigope") String codigope){
+    public ResponseEntity<VeterinariosDto> obtenerVeterinarioPorId(@PathVariable(value = "id") String id, @PathVariable(value = "codigope") String codigope){
         VeterinariosDto vetDto = veterinariosService.obtenerVeterinarioPorId(id, codigope);
         
         return new ResponseEntity<>(vetDto, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class VeterinariosController {
     @DeleteMapping("/{id}/persona/{codigope}")
     public ResponseEntity<String> eliminarVeterinario(@PathVariable(value = "id") String id, @PathVariable(value = "codigope") String codigope) {
         veterinariosService.eliminarVeterinario(id, codigope);
-        return new ResponseEntity<>("Persona eliminada con éxito", HttpStatus.OK);
+        return new ResponseEntity<>("Veterinario eliminada con éxito", HttpStatus.OK);
     }
     
 }
