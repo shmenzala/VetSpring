@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -21,6 +22,7 @@ import org.hibernate.annotations.Parameter;
  * @author shmen
  */
 @Entity
+@Table(name = "CLIENTE")
 public class Cliente implements Serializable{
     
     @Id
