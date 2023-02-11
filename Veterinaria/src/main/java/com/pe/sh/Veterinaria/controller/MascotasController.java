@@ -60,7 +60,7 @@ public class MascotasController {
     }
     
     @GetMapping("/cliente/{idcl}")
-    public List<MascotasDto> listarMascotas(@PathVariable(name = "idcl") String idcl){
+    public List<MascotasDto> listarMascotasPorClienteId(@PathVariable(name = "idcl") String idcl){
         return mascotasService.listarMascotasPorClienteId(idcl);
     }
     
