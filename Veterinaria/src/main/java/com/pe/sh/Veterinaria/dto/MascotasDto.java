@@ -87,6 +87,4 @@ public class MascotasDto {
         this.fecha_na = fecha_na;
     }
     
-    
-    
 }

@@ -6,6 +6,7 @@ package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.MascotasDto;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -22,5 +23,7 @@ public interface MascotasService {
     public MascotasDto actualizarMascota(MascotasDto masDto, String id);
     
     public void eliminarMascota(String id);
+    
+    public List<MascotasDto> listarMascotasPorClienteId(String clienteid);
     
 }

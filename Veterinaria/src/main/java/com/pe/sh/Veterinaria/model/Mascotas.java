@@ -33,7 +33,7 @@ public class Mascotas {
     @GeneratedValue(generator = "inc_seqMas")
     @GenericGenerator(name = "inc_seqMas", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
             parameters = {@Parameter(name = "sqcName", value = "MASCOTAS_INC"),
-                          @Parameter(name = "identificator_id", value = "CL")})
+                          @Parameter(name = "identificator_id", value = "MA")})
     @SequenceGenerator(name = "inc_seqMas", sequenceName = "MASCOTAS_INC", initialValue = 1, allocationSize = 1)
     private String id;
     
