@@ -16,4 +16,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, String>{
     
     //List<Cliente> findByPersonacliId(String personacliId);
     
+    List<Cliente> findByMascotasId(String codigoma);
+    
 }

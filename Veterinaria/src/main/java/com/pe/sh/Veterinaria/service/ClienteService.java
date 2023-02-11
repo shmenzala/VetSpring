@@ -25,4 +25,6 @@ public interface ClienteService {
     
     //public List<ClienteDto> obtenerClientePorPersonaId(String id);
     
+    public List<ClienteDto> listarClientesPorMascotaId(String codigoma);
+    
 }

@@ -60,4 +60,10 @@ public class ClienteController {
         return new ResponseEntity<>("Cliente eliminado con éxito", HttpStatus.OK);
     }
     
+    //FUNCION PARA VER: De la mascota M1 quienes son sus dueños
+    @GetMapping("/mascotas/{idma}")
+    public List<ClienteDto> listarClientesPorMascotaId(@PathVariable(name = "idma") String idma){
+        return clienteService.listarClientesPorMascotaId(idma);
+    }
+    
 }

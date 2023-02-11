@@ -92,6 +92,12 @@ public class ClienteServiceImpl implements ClienteService{
         clienteRepository.delete(cliente);
     }
     
+    @Override
+    public List<ClienteDto> listarClientesPorMascotaId(String codigoma) {
+        List<Cliente> clientes = clienteRepository.findByMascotasId(codigoma);
+        return clientes.stream().map(cliente -> mapearDto(cliente)).collect(Collectors.toList());
+    }
+    
     //La ENTIDAD setea los datos provenientes del DTO
     private Cliente mapearEntidad(ClienteDto cliDto){
         Cliente cli = modelMapper.map(cliDto, Cliente.class);
