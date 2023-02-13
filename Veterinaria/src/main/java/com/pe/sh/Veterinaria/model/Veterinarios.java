@@ -4,13 +4,17 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -44,6 +48,10 @@ public class Veterinarios implements Serializable{
     @JoinColumn(name = "codigope")
     private Persona personavet;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "codigovefk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Citas> citas = new HashSet<>();
+    
     public Veterinarios() {
     }
 
@@ -86,4 +94,12 @@ public class Veterinarios implements Serializable{
         this.personavet = personavet;
     }
 
+    public Set<Citas> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(Set<Citas> citas) {
+        this.citas = citas;
+    }
+    
 }

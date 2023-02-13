@@ -5,10 +5,12 @@
 package com.pe.sh.Veterinaria.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
@@ -118,7 +120,5 @@ public class Persona implements Serializable{
     public void setDni(String dni) {
         this.dni = dni;
     }
-    
-    
     
 }

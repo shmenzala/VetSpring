@@ -4,6 +4,7 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -47,6 +49,10 @@ public class Cliente implements Serializable{
     
     @ManyToMany(mappedBy = "clientes", fetch = FetchType.LAZY)
     private Set<Mascotas> mascotas = new HashSet<>();
+    
+    @JsonBackReference
+    @OneToMany(mappedBy = "codigoclfk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Citas> citas = new HashSet<>();
 
     public Cliente() {
     }
@@ -87,6 +93,14 @@ public class Cliente implements Serializable{
 
     public void setMascotas(Set<Mascotas> mascotas) {
         this.mascotas = mascotas;
+    }
+
+    public Set<Citas> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(Set<Citas> citas) {
+        this.citas = citas;
     }
     
     

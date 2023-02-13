@@ -4,6 +4,7 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
@@ -60,6 +62,10 @@ public class Mascotas {
             , inverseJoinColumns = @JoinColumn(name = "codigocl"))
     private Set<Cliente> clientes = new HashSet<>();
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "codigomafk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Citas> citas = new HashSet<>();
+    
     public Mascotas() {
     }
 
@@ -135,6 +141,14 @@ public class Mascotas {
 
     public void setClientes(Set<Cliente> clientes) {
         this.clientes = clientes;
+    }
+
+    public Set<Citas> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(Set<Citas> citas) {
+        this.citas = citas;
     }
     
     
