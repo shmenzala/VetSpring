@@ -4,6 +4,10 @@
  */
 package com.pe.sh.Veterinaria.dto;
 
+import com.pe.sh.Veterinaria.model.Cliente;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  *
  * @author shmen
@@ -17,6 +21,7 @@ public class MascotasDto {
     private String color;
     private int sexo;
     private String fecha_na;
+    private Set<Cliente> clientes;
 
     public MascotasDto() {
     }
@@ -86,5 +91,15 @@ public class MascotasDto {
     public void setFecha_na(String fecha_na) {
         this.fecha_na = fecha_na;
     }
+
+    public Set<String> getClientes() {
+        return clientes.stream().map(cl -> cl.getCodigocl()).collect(Collectors.toSet());
+    }
+
+    public void setClientes(Set<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+    
+    
     
 }

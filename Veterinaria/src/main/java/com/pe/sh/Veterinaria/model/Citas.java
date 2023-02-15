@@ -5,12 +5,15 @@
 package com.pe.sh.Veterinaria.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -51,6 +54,9 @@ public class Citas implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "codigoma", nullable = false)
     private Mascotas codigomafk;
+    
+    @ManyToMany(mappedBy = "citas", fetch = FetchType.LAZY)
+    private Set<Servicios> servicios = new HashSet<>();
 
     public Citas() {
     }
@@ -110,6 +116,14 @@ public class Citas implements Serializable{
 
     public void setCodigoma(Mascotas codigomafk) {
         this.codigomafk = codigomafk;
+    }
+
+    public Set<Servicios> getServicios() {
+        return servicios;
+    }
+
+    public void setServicios(Set<Servicios> servicios) {
+        this.servicios = servicios;
     }
 
 }

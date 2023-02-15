@@ -58,8 +58,9 @@ public class Mascotas {
     private String fecha_na;
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "DETALLE_PROPIETARIO", joinColumns = @JoinColumn(name = "codigoma")
-            , inverseJoinColumns = @JoinColumn(name = "codigocl"))
+    @JsonBackReference
+    @JoinTable(name = "DETALLE_PROPIETARIO", joinColumns = @JoinColumn(name = "codigoma", referencedColumnName = "codigoma")
+            , inverseJoinColumns = @JoinColumn(name = "codigocl", referencedColumnName = "codigocl"))
     private Set<Cliente> clientes = new HashSet<>();
 
     @JsonBackReference
