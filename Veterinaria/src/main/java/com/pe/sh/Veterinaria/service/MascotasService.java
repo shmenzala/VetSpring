@@ -26,4 +26,6 @@ public interface MascotasService {
     
     public List<MascotasDto> listarMascotasPorClienteId(String clienteid);
     
+    public MascotasDto asignarDuenoALaMascota(String id, String clienteid);
+    
 }

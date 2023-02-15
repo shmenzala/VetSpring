@@ -7,6 +7,8 @@ package com.pe.sh.Veterinaria.repository;
 import com.pe.sh.Veterinaria.model.Cliente;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -17,5 +19,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, String>{
     //List<Cliente> findByPersonacliId(String personacliId);
     
     List<Cliente> findByMascotasId(String codigoma);
+    
+    @Query("select count(codigope) from Veterinarios where codigope=:codigope")
+    long coincidenciaPersonaVeterinario(@Param("codigope") String codigope);
     
 }

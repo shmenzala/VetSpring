@@ -39,6 +39,13 @@ public class VeterinariosServiceImpl implements VeterinariosService{
         Veterinarios veterinario = mapearEntidad(vetDto);
         
         Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        
+        long coincidencia = veterinariosRepository.coincidenciaPersonaCliente(codigope);
+        
+        if(coincidencia > 0){
+            return mapearDto(veterinario);
+        }
+        
         veterinario.setPersonavet(persona);
         
         Veterinarios nuevoVeterinario = veterinariosRepository.save(veterinario);

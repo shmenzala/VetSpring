@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,25 @@ public class MascotasServiceImpl implements MascotasService{
         return mascotas.stream().map(mascota -> mapearDto(mascota)).collect(Collectors.toList());
     }
     
+    @Override
+    public MascotasDto asignarDuenoALaMascota(String id, String clienteid) {
+        
+        Set<Cliente> clienteSet = null;
+        
+        Mascotas mascota = mascotasRepository.findById(id).orElseThrow(null);
+        Cliente cliente = clienteRepository.findById(clienteid).orElseThrow(null);
+        
+        clienteSet = mascota.getClientes();
+        clienteSet.add(cliente);
+        
+        mascota.setClientes(clienteSet);
+        
+        Mascotas mascotaActualizadaCliente = mascotasRepository.save(mascota);
+        
+        return mapearDto(mascotaActualizadaCliente);
+        
+    }
+    
     //La ENTIDAD setea los datos provenientes del DTO
     private Mascotas mapearEntidad(MascotasDto masDto){
         Mascotas mas = modelMapper.map(masDto, Mascotas.class);
@@ -96,6 +116,8 @@ public class MascotasServiceImpl implements MascotasService{
         MascotasDto masDto = modelMapper.map(mas, MascotasDto.class);
         return masDto;
     }
+
+    
 
     
 

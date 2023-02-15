@@ -21,7 +21,7 @@ public class MascotasDto {
     private String color;
     private int sexo;
     private String fecha_na;
-    private Set<Cliente> clientes;
+    private Set<ClienteDto> clientes;
 
     public MascotasDto() {
     }
@@ -92,11 +92,12 @@ public class MascotasDto {
         this.fecha_na = fecha_na;
     }
 
-    public Set<String> getClientes() {
-        return clientes.stream().map(cl -> cl.getCodigocl()).collect(Collectors.toSet());
+    public Set<ClienteDto> getClientes() {
+        //return clientes.stream().map(cl -> cl.getCodigocl()).collect(Collectors.toSet());
+        return clientes;
     }
 
-    public void setClientes(Set<Cliente> clientes) {
+    public void setClientes(Set<ClienteDto> clientes) {
         this.clientes = clientes;
     }
     

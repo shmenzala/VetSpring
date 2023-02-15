@@ -56,12 +56,17 @@ public class MascotasController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarMascota(@PathVariable(name = "id") String id) {
         mascotasService.eliminarMascota(id);
-        return new ResponseEntity<>("Persona eliminada con éxito", HttpStatus.OK);
+        return new ResponseEntity<>("Mascota eliminada con éxito", HttpStatus.OK);
     }
     
     @GetMapping("/cliente/{idcl}")
     public List<MascotasDto> listarMascotasPorClienteId(@PathVariable(name = "idcl") String idcl){
         return mascotasService.listarMascotasPorClienteId(idcl);
+    }
+    
+    @PutMapping("/{id}/cliente/{idcl}")
+    public MascotasDto asignarDuenoALaMascota(@PathVariable(value = "id") String id, @PathVariable(name = "idcl") String idcl){
+        return mascotasService.asignarDuenoALaMascota(id, idcl);
     }
     
 }
