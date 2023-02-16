@@ -4,9 +4,11 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
@@ -55,8 +58,9 @@ public class Citas implements Serializable{
     @JoinColumn(name = "codigoma", nullable = false)
     private Mascotas codigomafk;
     
-    @ManyToMany(mappedBy = "citas", fetch = FetchType.LAZY)
-    private Set<Servicios> servicios = new HashSet<>();
+    @JsonBackReference
+    @OneToMany(mappedBy = "codigoserfk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Detalle_Servicios> det_serv = new HashSet<>();
 
     public Citas() {
     }
@@ -118,12 +122,12 @@ public class Citas implements Serializable{
         this.codigomafk = codigomafk;
     }
 
-    public Set<Servicios> getServicios() {
-        return servicios;
+    public Set<Detalle_Servicios> getDet_serv() {
+        return det_serv;
     }
 
-    public void setServicios(Set<Servicios> servicios) {
-        this.servicios = servicios;
+    public void setDet_serv(Set<Detalle_Servicios> det_serv) {
+        this.det_serv = det_serv;
     }
 
 }

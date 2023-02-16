@@ -4,6 +4,7 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,12 +45,11 @@ public class Servicios implements Serializable{
     
     @Column(name = "descripser")
     private String descripser;
-    
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "DETALLE_SERVICIOS", joinColumns = @JoinColumn(name = "codigoser", referencedColumnName = "codigoser")
-            , inverseJoinColumns = @JoinColumn(name = "codigocit", referencedColumnName = "codigocit"))
-    private Set<Citas> citas = new HashSet<>();
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "codigoserfk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Detalle_Servicios> det_serv = new HashSet<>();
+    
     public Servicios() {
     }
 
@@ -83,12 +83,12 @@ public class Servicios implements Serializable{
         this.descripser = descripser;
     }
 
-    public Set<Citas> getCitas() {
-        return citas;
+    public Set<Detalle_Servicios> getDet_serv() {
+        return det_serv;
     }
 
-    public void setCitas(Set<Citas> citas) {
-        this.citas = citas;
+    public void setDet_serv(Set<Detalle_Servicios> det_serv) {
+        this.det_serv = det_serv;
     }
     
 }
