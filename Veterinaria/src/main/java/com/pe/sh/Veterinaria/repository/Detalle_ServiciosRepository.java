@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.repository;
 
 import com.pe.sh.Veterinaria.model.Detalle_Servicios;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author shmen
  */
 public interface Detalle_ServiciosRepository extends JpaRepository<Detalle_Servicios, String>{
+    
+    public List<Detalle_Servicios> findByCodigoserfkIdAndCodigocitfkId(String codigoserfk, String codigocitfk);
     
 }

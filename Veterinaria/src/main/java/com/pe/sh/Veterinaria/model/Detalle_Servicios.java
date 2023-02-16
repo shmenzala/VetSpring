@@ -39,7 +39,7 @@ public class Detalle_Servicios implements Serializable{
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "codigoser", nullable = false)
-    private Cliente codigoserfk;
+    private Servicios codigoserfk;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "codigocit", nullable = false)
@@ -48,7 +48,7 @@ public class Detalle_Servicios implements Serializable{
     public Detalle_Servicios() {
     }
 
-    public Detalle_Servicios(String codigodet_ser, String descrip, Cliente codigoserfk, Citas codigocitfk) {
+    public Detalle_Servicios(String codigodet_ser, String descrip, Servicios codigoserfk, Citas codigocitfk) {
         this.codigodet_ser = codigodet_ser;
         this.descrip = descrip;
         this.codigoserfk = codigoserfk;
@@ -71,19 +71,19 @@ public class Detalle_Servicios implements Serializable{
         this.descrip = descrip;
     }
 
-    public Cliente getCodigoserfk() {
+    public Servicios getCodigoser() {
         return codigoserfk;
     }
 
-    public void setCodigoserfk(Cliente codigoserfk) {
+    public void setCodigoser(Servicios codigoserfk) {
         this.codigoserfk = codigoserfk;
     }
 
-    public Citas getCodigocitfk() {
+    public Citas getCodigocit() {
         return codigocitfk;
     }
 
-    public void setCodigocitfk(Citas codigocitfk) {
+    public void setCodigocit(Citas codigocitfk) {
         this.codigocitfk = codigocitfk;
     }
     
