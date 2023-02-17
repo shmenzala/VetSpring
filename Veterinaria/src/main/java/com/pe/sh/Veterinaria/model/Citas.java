@@ -45,23 +45,27 @@ public class Citas implements Serializable{
     
     @Column(name = "descrip")
     private String descrip;
-    
+    //N:1 TABLA CLIENTES
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "codigocl", nullable = false)
     private Cliente codigoclfk;
-    
+    //N:1 TABLA VETERINARIOS
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "codigove", nullable = false)
     private Veterinarios codigovefk;
-    
+    //N:1 TABLA MASCOTAS
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "codigoma", nullable = false)
     private Mascotas codigomafk;
-    
+    //1:N TABLA DETALLE_SERVICIOS
     @JsonBackReference
-    @OneToMany(mappedBy = "codigoserfk", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "codigocitfk", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Detalle_Servicios> det_serv = new HashSet<>();
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "codigocitdvfk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Detalle_Vacunacion> det_vac = new HashSet<>();
+    
     public Citas() {
     }
 
