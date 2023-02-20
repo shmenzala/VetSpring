@@ -134,4 +134,14 @@ public class Citas implements Serializable{
         this.det_serv = det_serv;
     }
 
+    public Set<Detalle_Vacunacion> getDet_vac() {
+        return det_vac;
+    }
+
+    public void setDet_vac(Set<Detalle_Vacunacion> det_vac) {
+        this.det_vac = det_vac;
+    }
+
+    
+    
 }

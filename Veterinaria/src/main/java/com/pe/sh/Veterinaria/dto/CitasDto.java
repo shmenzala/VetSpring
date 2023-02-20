@@ -4,6 +4,8 @@
  */
 package com.pe.sh.Veterinaria.dto;
 
+import java.util.Set;
+
 /**
  *
  * @author shmen
@@ -13,6 +15,8 @@ public class CitasDto {
     private String codigocit;
     private String fecha_cit;
     private String descrip;
+    private Set<Detalle_ServiciosDto> det_serv;
+    private Set<Detalle_VacunacionDto> det_vac;
 
     public CitasDto() {
     }
@@ -46,7 +50,21 @@ public class CitasDto {
     public void setDescrip(String descrip) {
         this.descrip = descrip;
     }
-    
-    
+
+    public Set<Detalle_ServiciosDto> getDet_serv() {
+        return det_serv;
+    }
+
+    public void setDet_serv(Set<Detalle_ServiciosDto> det_serv) {
+        this.det_serv = det_serv;
+    }
+
+    public Set<Detalle_VacunacionDto> getDet_vac() {
+        return det_vac;
+    }
+
+    public void setDet_vac(Set<Detalle_VacunacionDto> det_vac) {
+        this.det_vac = det_vac;
+    }
     
 }

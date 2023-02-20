@@ -4,6 +4,8 @@
  */
 package com.pe.sh.Veterinaria.dto;
 
+import java.util.Set;
+
 /**
  *
  * @author shmen
@@ -13,6 +15,8 @@ public class Detalle_VacunacionDto {
     private String codigodet_vac;
     private String fecha_ap;
     private String fecha_prog;
+    private Set<EnfermedadesDto> enfermedades;
+    private Set<VacunasDto> vacunas;
 
     public Detalle_VacunacionDto() {
     }
@@ -45,6 +49,22 @@ public class Detalle_VacunacionDto {
 
     public void setFecha_prog(String fecha_prog) {
         this.fecha_prog = fecha_prog;
+    }
+
+    public Set<EnfermedadesDto> getEnfermedades() {
+        return enfermedades;
+    }
+
+    public void setEnfermedades(Set<EnfermedadesDto> enfermedades) {
+        this.enfermedades = enfermedades;
+    }
+
+    public Set<VacunasDto> getVacunas() {
+        return vacunas;
+    }
+
+    public void setVacunas(Set<VacunasDto> vacunas) {
+        this.vacunas = vacunas;
     }
     
     
