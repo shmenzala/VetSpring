@@ -6,6 +6,7 @@ package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.VeterinariosDto;
 import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
+import com.pe.sh.Veterinaria.exceptions.VetAppException;
 import com.pe.sh.Veterinaria.model.Persona;
 import com.pe.sh.Veterinaria.model.Veterinarios;
 import com.pe.sh.Veterinaria.repository.PersonaRepository;
@@ -63,12 +64,14 @@ public class VeterinariosServiceImpl implements VeterinariosService{
 
     @Override
     public VeterinariosDto obtenerVeterinarioPorId(String id, String codigope) {
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
         
-        Veterinarios veterinario = veterinariosRepository.findById(id).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", id));
         
         if(!veterinario.getPersonavet().getCodigope().equals(persona.getCodigope())){
-            return mapearDto(veterinario);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "El veterinario no tiene relacion con el recurso persona");
         }
         
         return mapearDto(veterinario);
@@ -76,12 +79,14 @@ public class VeterinariosServiceImpl implements VeterinariosService{
 
     @Override
     public VeterinariosDto actualizarVeterinario(VeterinariosDto vetDto, String id, String codigope) {
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
         
-        Veterinarios veterinario = veterinariosRepository.findById(id).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", id));
         
         if(!veterinario.getPersonavet().getCodigope().equals(persona.getCodigope())){
-            return mapearDto(veterinario);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "El veterinario no tiene relacion con el recurso persona");
         }
         
         veterinario.setAnio_cont(vetDto.getAnio_cont());
@@ -95,12 +100,14 @@ public class VeterinariosServiceImpl implements VeterinariosService{
     @Override
     public void eliminarVeterinario(String id, String codigope) {
         
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
         
-        Veterinarios veterinario = veterinariosRepository.findById(id).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", id));
         
         if(!veterinario.getPersonavet().getCodigope().equals(persona.getCodigope())){
-            return ;
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "El veterinario no tiene relacion con el recurso persona");
         }
         
         veterinariosRepository.delete(veterinario);
