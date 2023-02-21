@@ -5,6 +5,8 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.ClienteDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
+import com.pe.sh.Veterinaria.exceptions.VetAppException;
 import com.pe.sh.Veterinaria.model.Cliente;
 import com.pe.sh.Veterinaria.model.Persona;
 import com.pe.sh.Veterinaria.repository.ClienteRepository;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +39,8 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteDto crearCliente(String codigope, ClienteDto cliDto) {
         Cliente cliente = mapearEntidad(cliDto);
 
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
         
         long coincidencia = clienteRepository.coincidenciaPersonaVeterinario(codigope);
         
@@ -59,12 +63,14 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDto obtenerClientePorId(String id, String codigope) {
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
 
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(null);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", id));
 
         if (!cliente.getPersonacli().getCodigope().equals(persona.getCodigope())) {
-            return mapearDto(cliente);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "La persona no tiene relacion con el cliente");
         }
 
         return mapearDto(cliente);
@@ -72,12 +78,14 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDto actualizarCliente(ClienteDto cliDto, String id, String codigope) {
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
 
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(null);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", id));
 
         if (!cliente.getPersonacli().getCodigope().equals(persona.getCodigope())) {
-            return mapearDto(cliente);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "La persona no tiene relacion con el cliente");
         }
 
         cliente.setDireccion(cliDto.getDireccion());
@@ -89,12 +97,14 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void eliminarCliente(String id, String codigope) {
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
 
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(null);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", id));
 
         if (!cliente.getPersonacli().getCodigope().equals(persona.getCodigope())) {
-            return;
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "La persona no tiene relacion con el cliente");
         }
 
         clienteRepository.delete(cliente);

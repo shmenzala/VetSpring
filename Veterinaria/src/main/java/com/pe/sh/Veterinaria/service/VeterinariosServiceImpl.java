@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.VeterinariosDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.model.Persona;
 import com.pe.sh.Veterinaria.model.Veterinarios;
 import com.pe.sh.Veterinaria.repository.PersonaRepository;
@@ -38,7 +39,8 @@ public class VeterinariosServiceImpl implements VeterinariosService{
     public VeterinariosDto crearVeterinario(String codigope, VeterinariosDto vetDto) {
         Veterinarios veterinario = mapearEntidad(vetDto);
         
-        Persona persona = personaRepository.findById(codigope).orElseThrow(null);
+        Persona persona = personaRepository.findById(codigope)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", codigope));
         
         long coincidencia = veterinariosRepository.coincidenciaPersonaCliente(codigope);
         

@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.EnfermedadesDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.model.Enfermedades;
 import com.pe.sh.Veterinaria.repository.EnfermedadesRepository;
 import java.util.List;
@@ -49,7 +50,8 @@ public class EnfermedadesServiceImpl implements EnfermedadesService{
     @Override
     public EnfermedadesDto obtenerEnfermedadPorId(String codigoenf) {
         
-        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf).orElseThrow(null);
+        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf)
+                .orElseThrow(() -> new ResourceNotFoundException("Enfermedad", "id", codigoenf));
         
         return mapearDto(enfermedad);
         
@@ -58,7 +60,8 @@ public class EnfermedadesServiceImpl implements EnfermedadesService{
     @Override
     public EnfermedadesDto actualizarEnfermedad(EnfermedadesDto enfDto, String codigoenf) {
         
-        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf).orElseThrow(null);
+        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf)
+                .orElseThrow(() -> new ResourceNotFoundException("Enfermedad", "id", codigoenf));
         
         enfermedad.setNombre(enfDto.getNombre());
         enfermedad.setDescripcion(enfDto.getDescripcion());
@@ -71,7 +74,8 @@ public class EnfermedadesServiceImpl implements EnfermedadesService{
 
     @Override
     public void eliminarEnfermedad(String codigoenf) {
-        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf).orElseThrow(null);
+        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf)
+                .orElseThrow(() -> new ResourceNotFoundException("Enfermedad", "id", codigoenf));
         
         enfermedadesRepository.delete(enfermedad);
  

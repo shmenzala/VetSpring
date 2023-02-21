@@ -5,6 +5,8 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.CitasDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
+import com.pe.sh.Veterinaria.exceptions.VetAppException;
 import com.pe.sh.Veterinaria.model.Citas;
 import com.pe.sh.Veterinaria.model.Cliente;
 import com.pe.sh.Veterinaria.model.Mascotas;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,11 +48,14 @@ public class CitasServiceImpl implements CitasService{
     public CitasDto crearCita(String codigocl, String codigove, String codigoma, CitasDto citDto) {
         Citas cita = mapearEntidad(citDto);
         
-        Cliente cliente = clienteRepository.findById(codigocl).orElseThrow(null);
+        Cliente cliente = clienteRepository.findById(codigocl)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", codigocl));
         
-        Veterinarios veterinario = veterinariosRepository.findById(codigove).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(codigove)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         
-        Mascotas mascota = mascotasRepository.findById(codigoma).orElseThrow(null);
+        Mascotas mascota = mascotasRepository.findById(codigoma)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", codigoma));
         
         cita.setCodigocl(cliente);
         cita.setCodigove(veterinario);
@@ -75,25 +81,30 @@ public class CitasServiceImpl implements CitasService{
 
     @Override
     public CitasDto obtenerCitaPorId(String codigocit) {
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null);
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "id", codigocit));
         return mapearDto(cita);
     }
 
     @Override
     public CitasDto actualizarCita(String codigocl, String codigove, String codigoma, String codigocit, CitasDto citDto) {
         
-        Cliente cliente = clienteRepository.findById(codigocl).orElseThrow(null);
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "id", codigocit));
         
-        Veterinarios veterinario = veterinariosRepository.findById(codigove).orElseThrow(null);
+        Cliente cliente = clienteRepository.findById(codigocl)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", codigocl));
         
-        Mascotas mascota = mascotasRepository.findById(codigoma).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(codigove)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null); 
+        Mascotas mascota = mascotasRepository.findById(codigoma)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", codigoma)); 
         
         if(!(cita.getCodigocl().getCodigocl().equals(cliente.getCodigocl()) && 
            cita.getCodigove().getCodigove().equals(veterinario.getCodigove()) && 
            cita.getCodigoma().getCodigoma().equals(mascota.getCodigoma()))){
-            return mapearDto(cita);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "Algun recurso (cliente, veterinario o mascota) no pertenece a la cita");
         }
 
         cita.setFecha_cit(citDto.getFecha_cit());
@@ -106,18 +117,22 @@ public class CitasServiceImpl implements CitasService{
 
     @Override
     public void eliminarCitaPorIds(String codigocl, String codigove, String codigoma, String codigocit) {
-        Cliente cliente = clienteRepository.findById(codigocl).orElseThrow(null);
+        Cliente cliente = clienteRepository.findById(codigocl)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", codigocl));
         
-        Veterinarios veterinario = veterinariosRepository.findById(codigove).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(codigove)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         
-        Mascotas mascota = mascotasRepository.findById(codigoma).orElseThrow(null);
+        Mascotas mascota = mascotasRepository.findById(codigoma)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", codigoma));
         
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null); 
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "id", codigocit));
         
         if(!(cita.getCodigocl().getCodigocl().equals(cliente.getCodigocl()) && 
            cita.getCodigove().getCodigove().equals(veterinario.getCodigove()) && 
            cita.getCodigoma().getCodigoma().equals(mascota.getCodigoma()))){
-            return ;
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "Algun recurso (cliente, veterinario o mascota) no pertenece a la cita");
         }
         
         citasRepository.delete(cita);
@@ -125,7 +140,8 @@ public class CitasServiceImpl implements CitasService{
 
     @Override
     public void eliminarCita(String codigocit) {
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null);
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "id", codigocit));
        
         citasRepository.delete(cita);
     }

@@ -13,6 +13,7 @@ public class VeterinariosDto {
     private String codigove;
     private String anio_cont;
     private float salario;
+    private PersonaDto persona;
 
     public VeterinariosDto() {
     }
@@ -47,4 +48,14 @@ public class VeterinariosDto {
         this.salario = salario;
     }
 
+    public PersonaDto getPersonavet() {
+        return persona;
+    }
+
+    public void setPersonavet(PersonaDto persona) {
+        this.persona = persona;
+    }
+
+    
+    
 }
