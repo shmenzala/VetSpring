@@ -5,6 +5,8 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.Detalle_ServiciosDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
+import com.pe.sh.Veterinaria.exceptions.VetAppException;
 import com.pe.sh.Veterinaria.model.Citas;
 import com.pe.sh.Veterinaria.model.Detalle_Servicios;
 import com.pe.sh.Veterinaria.model.Servicios;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,9 +43,11 @@ public class Detalle_ServiciosServiceImpl implements Detalle_ServiciosService{
     public Detalle_ServiciosDto crearDetServ(String codigoser, String codigocit, Detalle_ServiciosDto dsvDto) {
         Detalle_Servicios detServ = mapearEntidad(dsvDto);
         
-        Servicios servicio = serviciosRepository.findById(codigoser).orElseThrow(null);
+        Servicios servicio = serviciosRepository.findById(codigoser)
+                .orElseThrow(() -> new ResourceNotFoundException("Servicio", "ïd", codigoser));
         
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null);
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "ïd", codigocit));
         
         detServ.setCodigoser(servicio);
         detServ.setCodigocit(cita);
@@ -72,15 +77,18 @@ public class Detalle_ServiciosServiceImpl implements Detalle_ServiciosService{
 
     @Override
     public Detalle_ServiciosDto actualizarDetServ(String codigoser, String codigocit, String codigodet_ser, Detalle_ServiciosDto dsvDto) {
-        Detalle_Servicios detServs = detalle_ServiciosRepository.findById(codigodet_ser).orElseThrow(null);
+        Detalle_Servicios detServs = detalle_ServiciosRepository.findById(codigodet_ser)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle_Servicio", "ïd", codigodet_ser));
         
-        Servicios servicio = serviciosRepository.findById(codigoser).orElseThrow(null);
+        Servicios servicio = serviciosRepository.findById(codigoser)
+                .orElseThrow(() -> new ResourceNotFoundException("Servicio", "ïd", codigoser));
         
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null);
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "ïd", codigocit));
         
         if(!(detServs.getCodigoser().getCodigoser().equals(servicio.getCodigoser()) &&
            detServs.getCodigocit().getCodigocit().equals(cita.getCodigocit()))){
-            return mapearDto(detServs);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "Algun recurso (servicio o cita) no pertenece al Detalle_Servicios");
         }
         
         detServs.setDescrip(dsvDto.getDescrip());
@@ -93,15 +101,18 @@ public class Detalle_ServiciosServiceImpl implements Detalle_ServiciosService{
 
     @Override
     public void eliminarDetServPorIds(String codigoser, String codigocit, String codigodet_ser) {
-        Detalle_Servicios detServs = detalle_ServiciosRepository.findById(codigodet_ser).orElseThrow(null);
+        Detalle_Servicios detServs = detalle_ServiciosRepository.findById(codigodet_ser)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle_Servicio", "ïd", codigodet_ser));
         
-        Servicios servicio = serviciosRepository.findById(codigoser).orElseThrow(null);
+        Servicios servicio = serviciosRepository.findById(codigoser)
+                .orElseThrow(() -> new ResourceNotFoundException("Servicio", "ïd", codigoser));
         
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null);
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "ïd", codigocit));
         
         if(!(detServs.getCodigoser().getCodigoser().equals(servicio.getCodigoser()) &&
            detServs.getCodigocit().getCodigocit().equals(cita.getCodigocit()))){
-            return ;
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "Algun recurso (servicio o cita) no pertenece al Detalle_Servicios");
         }
         
         detalle_ServiciosRepository.delete(detServs);
