@@ -5,6 +5,8 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.UsuariosDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
+import com.pe.sh.Veterinaria.exceptions.VetAppException;
 import com.pe.sh.Veterinaria.model.Usuarios;
 import com.pe.sh.Veterinaria.model.Veterinarios;
 import com.pe.sh.Veterinaria.repository.UsuariosRepository;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,7 +38,8 @@ public class UsuariosServiceImpl implements UsuariosService{
     public UsuariosDto crearUsuario(String codigove, UsuariosDto usuDto) {
         Usuarios usuario = mapearEntidad(usuDto);
         
-        Veterinarios veterinario = veterinariosRepository.findById(codigove).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(codigove)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         usuario.setVeterinario(veterinario);
         
         Usuarios nuevoUsuario = usuariosRepository.save(usuario);
@@ -51,12 +55,14 @@ public class UsuariosServiceImpl implements UsuariosService{
 
     @Override
     public UsuariosDto obtenerUsuarioPorId(String id, String codigove) {
-        Veterinarios veterinario = veterinariosRepository.findById(codigove).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(codigove)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         
-        Usuarios usuario = usuariosRepository.findById(id).orElseThrow(null);
+        Usuarios usuario = usuariosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", id));
         
         if(!usuario.getVeterinario().getCodigove().equals(veterinario.getCodigove())){
-            return mapearDto(usuario);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "El usuario no tiene relacion con el recurso veterinario");
         }
         
         return mapearDto(usuario);
@@ -64,12 +70,14 @@ public class UsuariosServiceImpl implements UsuariosService{
 
     @Override
     public UsuariosDto actualizarUsuario(UsuariosDto usuDto, String id, String codigove) {
-        Veterinarios veterinario = veterinariosRepository.findById(codigove).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(codigove)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         
-        Usuarios usuario = usuariosRepository.findById(id).orElseThrow(null);
+        Usuarios usuario = usuariosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", id));
         
         if(!usuario.getVeterinario().getCodigove().equals(veterinario.getCodigove())){
-            return mapearDto(usuario);
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "El usuario no tiene relacion con el recurso veterinario");
         }
         
         usuario.setNombreus(usuDto.getNombreus());
@@ -82,12 +90,14 @@ public class UsuariosServiceImpl implements UsuariosService{
 
     @Override
     public void eliminarUsuario(String id, String codigove) {
-        Veterinarios veterinario = veterinariosRepository.findById(codigove).orElseThrow(null);
+        Veterinarios veterinario = veterinariosRepository.findById(codigove)
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         
-        Usuarios usuario = usuariosRepository.findById(id).orElseThrow(null);
+        Usuarios usuario = usuariosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "id", id));
         
         if(!usuario.getVeterinario().getCodigove().equals(veterinario.getCodigove())){
-            return ;
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "El usuario no tiene relacion con el recurso veterinario");
         }
         
         usuariosRepository.delete(usuario);
