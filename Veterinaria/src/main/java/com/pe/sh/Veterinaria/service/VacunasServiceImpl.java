@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.VacunasDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.model.Vacunas;
 import com.pe.sh.Veterinaria.repository.VacunasRepository;
 import java.util.List;
@@ -48,14 +49,16 @@ public class VacunasServiceImpl implements VacunasService{
 
     @Override
     public VacunasDto obtenerVacunasPorId(String codigovac) {
-        Vacunas vacuna = vacunasRepository.findById(codigovac).orElseThrow(null);
+        Vacunas vacuna = vacunasRepository.findById(codigovac)
+                .orElseThrow(() -> new ResourceNotFoundException("Vacuna", "id", codigovac));
         
         return mapearDto(vacuna);
     }
 
     @Override
     public VacunasDto actualizarVacunas(VacunasDto vacDto, String codigovac) {
-        Vacunas vacuna = vacunasRepository.findById(codigovac).orElseThrow(null);
+        Vacunas vacuna = vacunasRepository.findById(codigovac)
+                .orElseThrow(() -> new ResourceNotFoundException("Vacuna", "id", codigovac));
         
         vacuna.setNombre(vacDto.getNombre());
         vacuna.setDescripcion(vacDto.getDescripcion());
@@ -67,7 +70,8 @@ public class VacunasServiceImpl implements VacunasService{
 
     @Override
     public void eliminarVacunas(String codigovac) {
-        Vacunas vacuna = vacunasRepository.findById(codigovac).orElseThrow(null);
+        Vacunas vacuna = vacunasRepository.findById(codigovac)
+                .orElseThrow(() -> new ResourceNotFoundException("Vacuna", "id", codigovac));
         
         vacunasRepository.delete(vacuna);
     }
