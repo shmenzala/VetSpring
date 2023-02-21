@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.PersonaDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.model.Cliente;
 import com.pe.sh.Veterinaria.model.Persona;
 import com.pe.sh.Veterinaria.model.Veterinarios;
@@ -56,13 +57,15 @@ public class PersonaServiceImpl implements PersonaService{
 
     @Override
     public PersonaDto obtenerPersonaPorId(String id) {
-        Persona persona = personaRepository.findById(id).orElseThrow(null);
+        Persona persona = personaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", id));
         return mapearDto(persona);
     }
 
     @Override
     public PersonaDto actualizarPersona(PersonaDto perDto, String id) {
-        Persona persona = personaRepository.findById(id).orElseThrow(null);
+        Persona persona = personaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", id));
         
         persona.setNombre(perDto.getNombre());
         persona.setCelular(perDto.getCelular());
@@ -78,7 +81,8 @@ public class PersonaServiceImpl implements PersonaService{
 
     @Override
     public void eliminarPersona(String id) {
-        Persona persona = personaRepository.findById(id).orElseThrow(null);
+        Persona persona = personaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Persona", "id", id));
        
         personaRepository.delete(persona);
     }
