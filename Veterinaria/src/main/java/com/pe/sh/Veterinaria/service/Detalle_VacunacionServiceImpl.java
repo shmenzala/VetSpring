@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.Detalle_VacunacionDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.model.Citas;
 import com.pe.sh.Veterinaria.model.Detalle_Vacunacion;
 import com.pe.sh.Veterinaria.model.Enfermedades;
@@ -47,7 +48,8 @@ public class Detalle_VacunacionServiceImpl implements Detalle_VacunacionService{
         
         Detalle_Vacunacion detVac = mapearEntidad(dtvDto);
         
-        Citas cita = citasRepository.findById(codigocit).orElseThrow(null);
+        Citas cita = citasRepository.findById(codigocit)
+                .orElseThrow(() -> new ResourceNotFoundException("Cita", "id", codigocit));
         
         detVac.setCodigocit(cita);
         
@@ -68,14 +70,16 @@ public class Detalle_VacunacionServiceImpl implements Detalle_VacunacionService{
     @Override
     public Detalle_VacunacionDto obtenerDetVacPorId(String codigodet_vac) {
         
-        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac).orElseThrow(null);
+        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle_Vacunacion", "id", codigodet_vac));
         return mapearDto(detVac);
         
     }
 
     @Override
     public Detalle_VacunacionDto actualizarDetVac(Detalle_VacunacionDto dtvDto, String codigodet_vac) {
-        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac).orElseThrow(null);
+        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle_Vacunacion", "id", codigodet_vac));
         
         detVac.setFecha_ap(dtvDto.getFecha_ap());
         detVac.setFecha_prog(dtvDto.getFecha_prog());
@@ -99,8 +103,11 @@ public class Detalle_VacunacionServiceImpl implements Detalle_VacunacionService{
         
         Set<Enfermedades> enfermedadSet = null;
         
-        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac).orElseThrow(null);
-        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf).orElseThrow(null);
+        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle_Vacunacion", "id", codigodet_vac));
+        
+        Enfermedades enfermedad = enfermedadesRepository.findById(codigoenf)
+                .orElseThrow(() -> new ResourceNotFoundException("Enfermedad", "id", codigoenf));
         
         enfermedadSet = detVac.getEnfermedades();
         enfermedadSet.add(enfermedad);
@@ -117,8 +124,11 @@ public class Detalle_VacunacionServiceImpl implements Detalle_VacunacionService{
     public Detalle_VacunacionDto asignarVacunaALaDetVac(String codigodet_vac, String codigovac) {
         Set<Vacunas> vacunaSet = null;
         
-        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac).orElseThrow(null);
-        Vacunas vacuna = vacunasRepository.findById(codigovac).orElseThrow(null);
+        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle_Vacunacion", "id", codigodet_vac));
+        
+        Vacunas vacuna = vacunasRepository.findById(codigovac)
+                .orElseThrow(() -> new ResourceNotFoundException("Vacuna", "id", codigovac));
         
         vacunaSet = detVac.getVacunas();
         vacunaSet.add(vacuna);
@@ -132,7 +142,8 @@ public class Detalle_VacunacionServiceImpl implements Detalle_VacunacionService{
 
     @Override
     public void eliminarDetVac(String codigodet_vac) {
-        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac).orElseThrow(null);
+        Detalle_Vacunacion detVac = detalle_VacunacionRepository.findById(codigodet_vac)
+                .orElseThrow(() -> new ResourceNotFoundException("Detalle_Vacunacion", "id", codigodet_vac));
         detalle_VacunacionRepository.delete(detVac);
     }
     
