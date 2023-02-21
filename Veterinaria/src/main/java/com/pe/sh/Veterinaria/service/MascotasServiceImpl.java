@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.MascotasDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.model.Cliente;
 import com.pe.sh.Veterinaria.model.Mascotas;
 import com.pe.sh.Veterinaria.repository.ClienteRepository;
@@ -53,13 +54,15 @@ public class MascotasServiceImpl implements MascotasService{
 
     @Override
     public MascotasDto obtenerMascotaPorId(String id) {
-        Mascotas mascota = mascotasRepository.findById(id).orElseThrow(null);
+        Mascotas mascota = mascotasRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", id));
         return mapearDto(mascota);
     }
 
     @Override
     public MascotasDto actualizarMascota(MascotasDto masDto, String id) {
-        Mascotas mascota = mascotasRepository.findById(id).orElseThrow(null);
+        Mascotas mascota = mascotasRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", id));
         
         mascota.setNombrema(masDto.getNombrema());
         mascota.setNombrean(masDto.getNombrean());
@@ -75,7 +78,8 @@ public class MascotasServiceImpl implements MascotasService{
 
     @Override
     public void eliminarMascota(String id) {
-        Mascotas mascota = mascotasRepository.findById(id).orElseThrow(null);
+        Mascotas mascota = mascotasRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", id));
        
         mascotasRepository.delete(mascota);
     }
@@ -91,8 +95,10 @@ public class MascotasServiceImpl implements MascotasService{
         
         Set<Cliente> clienteSet = null;
         
-        Mascotas mascota = mascotasRepository.findById(id).orElseThrow(null);
-        Cliente cliente = clienteRepository.findById(clienteid).orElseThrow(null);
+        Mascotas mascota = mascotasRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", id));
+        Cliente cliente = clienteRepository.findById(clienteid)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", clienteid));
         
         clienteSet = mascota.getClientes();
         clienteSet.add(cliente);
