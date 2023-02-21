@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.service;
 
 import com.pe.sh.Veterinaria.dto.ServiciosDto;
+import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.model.Servicios;
 import com.pe.sh.Veterinaria.repository.ServiciosRepository;
 import java.util.List;
@@ -45,13 +46,15 @@ public class ServiciosServiceImpl implements ServiciosService{
 
     @Override
     public ServiciosDto obtenerServicioPorId(String id) {
-        Servicios servicio = serviciosRepository.findById(id).orElseThrow(null);
+        Servicios servicio = serviciosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Servicio", "id", id));
         return mapearDto(servicio);
     }
 
     @Override
     public ServiciosDto actualizarServicio(ServiciosDto serDto, String id) {
-        Servicios servicio = serviciosRepository.findById(id).orElseThrow(null);
+        Servicios servicio = serviciosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Servicio", "id", id));
         
         servicio.setNombreser(serDto.getNombreser());
         servicio.setDescripser(serDto.getDescripser());
@@ -63,7 +66,8 @@ public class ServiciosServiceImpl implements ServiciosService{
 
     @Override
     public void eliminarServicio(String id) {
-        Servicios servicio = serviciosRepository.findById(id).orElseThrow(null);
+        Servicios servicio = serviciosRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Servicio", "id", id));
        
         serviciosRepository.delete(servicio);
     }
