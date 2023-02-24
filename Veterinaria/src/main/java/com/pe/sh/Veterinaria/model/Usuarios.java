@@ -4,13 +4,19 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -44,6 +50,12 @@ public class Usuarios implements Serializable{
     @JoinColumn(name = "codigove")
     private Veterinarios veterinario;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
+    @JoinTable(name = "USUARIOS_ROLES", joinColumns = @JoinColumn(name = "codigous", referencedColumnName = "codigous")
+            , inverseJoinColumns = @JoinColumn(name = "codigorol", referencedColumnName = "codigorol"))
+    private Set<Roles> roles = new HashSet<>();
+    
     public Usuarios() {
     }
 
@@ -84,6 +96,14 @@ public class Usuarios implements Serializable{
 
     public void setVeterinario(Veterinarios veterinario) {
         this.veterinario = veterinario;
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
     }
     
     
