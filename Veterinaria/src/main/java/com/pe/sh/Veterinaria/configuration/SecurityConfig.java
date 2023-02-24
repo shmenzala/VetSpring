@@ -4,9 +4,12 @@
  */
 package com.pe.sh.Veterinaria.configuration;
 
+import com.pe.sh.Veterinaria.security.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,6 +30,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+    
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
-    @Override
+    /*@Override
     @Bean
     protected UserDetailsService userDetailsService() {
         UserDetails samuel = User.builder().username("samuel")
@@ -55,6 +61,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("ADMIN").build();
         
         return new InMemoryUserDetailsManager(samuel, admin);
+    }*/
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+    
+    
 
 }

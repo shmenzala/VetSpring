@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.repository;
 
 import com.pe.sh.Veterinaria.model.Roles;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author shmen
  */
 public interface RolesRepository extends JpaRepository<Roles, String>{
+    
+    public Optional<Roles> findByNombre(String nombre);
     
 }
