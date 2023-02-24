@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface UsuariosService {
     
-    public UsuariosDto crearUsuario(String codigove, UsuariosDto usuDto);
+    public UsuariosDto crearUsuario(String codigorol, String codigove, UsuariosDto usuDto);
     
     public List<UsuariosDto> listarUsuarios();
     

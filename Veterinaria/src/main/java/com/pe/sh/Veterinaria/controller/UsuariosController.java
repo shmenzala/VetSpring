@@ -35,9 +35,11 @@ public class UsuariosController {
         return usuariosService.listarUsuarios();
     }
     
-    @PostMapping("/veterinario/{codigove}")
-    public ResponseEntity<UsuariosDto> crearUsuario(@PathVariable(value = "codigove") String id, @RequestBody UsuariosDto usuDto){
-        return new ResponseEntity<>(usuariosService.crearUsuario(id, usuDto), HttpStatus.CREATED);
+    @PostMapping("/veterinario/{codigove}/rol/{codigorol}")
+    public ResponseEntity<UsuariosDto> crearUsuario(@PathVariable(value = "codigove") String id,
+                                                    @PathVariable(value = "codigorol") String codigorol,
+                                                    @RequestBody UsuariosDto usuDto){
+        return new ResponseEntity<>(usuariosService.crearUsuario(codigorol, id, usuDto), HttpStatus.CREATED);
     }
     
     @GetMapping("/{id}/veterinario/{codigove}")

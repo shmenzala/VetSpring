@@ -7,15 +7,20 @@ package com.pe.sh.Veterinaria.service;
 import com.pe.sh.Veterinaria.dto.UsuariosDto;
 import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.exceptions.VetAppException;
+import com.pe.sh.Veterinaria.model.Roles;
 import com.pe.sh.Veterinaria.model.Usuarios;
 import com.pe.sh.Veterinaria.model.Veterinarios;
+import com.pe.sh.Veterinaria.repository.RolesRepository;
 import com.pe.sh.Veterinaria.repository.UsuariosRepository;
 import com.pe.sh.Veterinaria.repository.VeterinariosRepository;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,17 +38,38 @@ public class UsuariosServiceImpl implements UsuariosService{
     
     @Autowired
     private VeterinariosRepository veterinariosRepository;
+    
+    @Autowired
+    private RolesRepository rolesRepository;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public UsuariosDto crearUsuario(String codigove, UsuariosDto usuDto) {
-        Usuarios usuario = mapearEntidad(usuDto);
+    public UsuariosDto crearUsuario(String codigorol, String codigove, UsuariosDto usuDto) {
+        
+        if(usuariosRepository.existsByNombreus(usuDto.getNombreus())){
+            throw new VetAppException(HttpStatus.BAD_REQUEST, "Ese nombre de usuario ya existe");
+        }
+        
+        //Usuarios usuario = mapearEntidad(usuDto);
+        Usuarios usuario = new Usuarios();
+        usuario.setNombreus(usuDto.getNombreus());
+        usuario.setContraus(passwordEncoder.encode(usuDto.getContraus()));
         
         Veterinarios veterinario = veterinariosRepository.findById(codigove)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario", "id", codigove));
         usuario.setVeterinario(veterinario);
+
+        //Roles rol = rolesRepository.findByNombre("ROLE_ADMIN").get();
+        //usuario.setRoles(Collections.singleton(rol));
+        
+        Roles rol = rolesRepository.findById(codigorol)
+                .orElseThrow(() -> new ResourceNotFoundException("Rol", "id", codigorol));
+        usuario.setRoles(Collections.singleton(rol));
         
         Usuarios nuevoUsuario = usuariosRepository.save(usuario);
-
+        
         return mapearDto(nuevoUsuario);
     }
 
