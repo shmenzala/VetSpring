@@ -49,11 +49,11 @@ public class Roles implements Serializable{
         this.nombre = nombre;
     }
 
-    public String getId() {
+    public String getCodigorol() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setCodigorol(String id) {
         this.id = id;
     }
 
