@@ -4,7 +4,9 @@
  */
 package com.pe.sh.Veterinaria.controller;
 
+import com.pe.sh.Veterinaria.dto.JwtAuthResponseDto_;
 import com.pe.sh.Veterinaria.dto.LoginDto_;
+import com.pe.sh.Veterinaria.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +30,20 @@ public class AuthController_ {
     @Autowired
     private AuthenticationManager authenticationManager;
     
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto_ logDto){
+    public ResponseEntity<JwtAuthResponseDto_> authenticateUser(@RequestBody LoginDto_ logDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logDto.getUsername(), logDto.getPassword()));
         
         SecurityContextHolder.getContext().setAuthentication(authentication);
         
-        return new ResponseEntity<>("Ha iniciado sesión con éxito", HttpStatus.OK);
+        //Obtener token de jwtTokenProvider
+        String token = jwtTokenProvider.generarToken(authentication);
+        return ResponseEntity.ok(new JwtAuthResponseDto_(token));
+        
+        //return new ResponseEntity<>("Ha iniciado sesión con éxito", HttpStatus.OK);
     }
     
 }

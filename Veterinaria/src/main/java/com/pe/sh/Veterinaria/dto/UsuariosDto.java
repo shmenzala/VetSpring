@@ -4,6 +4,9 @@
  */
 package com.pe.sh.Veterinaria.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author shmen
@@ -13,6 +16,7 @@ public class UsuariosDto {
     private String codigous;
     private String nombreus;
     private String contraus;
+    private Set<RolesDto> roles = new HashSet<>();
 
     public UsuariosDto() {
     }
@@ -46,5 +50,15 @@ public class UsuariosDto {
     public void setContraus(String contraus) {
         this.contraus = contraus;
     }
+
+    public Set<RolesDto> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RolesDto> roles) {
+        this.roles = roles;
+    }
+    
+    
     
 }
