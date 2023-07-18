@@ -107,7 +107,7 @@ public class UsuariosServiceImpl implements UsuariosService{
         }
         
         usuario.setNombreus(usuDto.getNombreus());
-        usuario.setContraus(usuDto.getContraus());
+        usuario.setContraus(passwordEncoder.encode(usuDto.getContraus()));
 
         Usuarios usuActualizado = usuariosRepository.save(usuario);
         

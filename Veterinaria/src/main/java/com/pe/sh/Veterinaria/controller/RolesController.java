@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,21 +31,25 @@ public class RolesController {
     @Autowired
     private RolesService rolesService;
     
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<RolesDto> listarRoles(){
         return rolesService.listarRoles();
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<RolesDto> crearRol(@RequestBody RolesDto rolDto){
         return new ResponseEntity<>(rolesService.crearRol(rolDto), HttpStatus.CREATED);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{codigorol}")
     public ResponseEntity<RolesDto> obtenerRolPorId(@PathVariable(value = "codigorol") String codigorol){
         return ResponseEntity.ok(rolesService.obtenerRolesPorId(codigorol));
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{codigorol}")
     public ResponseEntity<RolesDto> actualizarRol(@RequestBody RolesDto rolDto, @PathVariable(value = "codigorol") String codigorol){
         RolesDto rolRespuesta = rolesService.actualizarRol(rolDto, codigorol);
@@ -52,6 +57,7 @@ public class RolesController {
         return new ResponseEntity<>(rolRespuesta, HttpStatus.OK);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{codigorol}")
     public ResponseEntity<String> eliminarRol(@PathVariable(value = "codigorol") String codigorol){
         rolesService.eliminarRol(codigorol);

@@ -1,0 +1,21 @@
+<app-header></app-header>
+<div>
+    <ul>
+        <li>
+            <a class="a-citasyconsultas" routerLink="citconsult">Citas y consultas</a>
+        </li>
+        <li>
+            <a class="a-mascotas" routerLink="mascotas">Mascotas</a>
+        </li>
+        <li *ngIf="isAdmin()">
+            <a class="a-personas" routerLink="personas">Personas</a>
+        </li>
+        <li>
+            <a class="a-servicios" routerLink="servicios">Servicios</a>
+        </li>
+        <li>
+            <a class="a-vacunas" routerLink="vacunas">Vacunas</a>
+        </li>
+    </ul>
+</div>
+<router-outlet></router-outlet>
