@@ -13,6 +13,7 @@ import java.util.Properties;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.generator.EventType;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.service.ServiceRegistry;
@@ -28,8 +29,16 @@ public class StringKeyGenerator implements IdentifierGenerator, Configurable{
     private String identificator_id = "";
 
     @Override
+    public Object generate(SharedSessionContractImplementor session, Object owner, Object currentValue, EventType eventType) {
+        return IdentifierGenerator.super.generate(session, owner, currentValue, eventType); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        session.
+    }
+    
+    
+    
+    @Override
     public Serializable generate(SharedSessionContractImplementor ssci, Object o) throws HibernateException {
-        Connection connection = ssci.connection();
+        Connection connection = ssci.;
         PreparedStatement ps = null;
         String result = "";
 
