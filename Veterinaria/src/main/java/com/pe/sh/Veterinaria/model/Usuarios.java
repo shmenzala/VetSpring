@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.pe.sh.Veterinaria.configuration.StringKeyGenerator;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class Usuarios implements Serializable {
     @Id
     @Column(name = "codigous")
     @GeneratedValue(generator = "inc_seqUsu")
-    @GenericGenerator(name = "inc_seqUsu", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
+    @GenericGenerator(name = "inc_seqUsu", type = StringKeyGenerator.class,
             parameters = {
                 @Parameter(name = "sqcName", value = "USUARIOS_INC"),
                 @Parameter(name = "identificator_id", value = "US")})

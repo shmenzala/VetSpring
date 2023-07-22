@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.pe.sh.Veterinaria.configuration.StringKeyGenerator;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class Detalle_Vacunacion implements Serializable{
     @Id
     @Column(name = "codigodet_vac")
     @GeneratedValue(generator = "inc_seqDvc")
-    @GenericGenerator(name = "inc_seqDvc", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
+    @GenericGenerator(name = "inc_seqDvc", type = StringKeyGenerator.class,
             parameters = {@Parameter(name = "sqcName", value = "DETALLE_VACUNACION_INC"),
                           @Parameter(name = "identificator_id", value = "DV")})
     @SequenceGenerator(name = "inc_seqDvc", sequenceName = "DETALLE_VACUNACION_INC", initialValue = 1, allocationSize = 1)

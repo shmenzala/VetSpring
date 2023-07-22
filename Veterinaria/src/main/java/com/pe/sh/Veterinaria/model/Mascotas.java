@@ -5,6 +5,7 @@
 package com.pe.sh.Veterinaria.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.pe.sh.Veterinaria.configuration.StringKeyGenerator;
 import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
@@ -33,7 +34,7 @@ public class Mascotas {
     @Id
     @Column(name = "codigoma")
     @GeneratedValue(generator = "inc_seqMas")
-    @GenericGenerator(name = "inc_seqMas", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
+    @GenericGenerator(name = "inc_seqMas", type = StringKeyGenerator.class,
             parameters = {@Parameter(name = "sqcName", value = "MASCOTAS_INC"),
                           @Parameter(name = "identificator_id", value = "MA")})
     @SequenceGenerator(name = "inc_seqMas", sequenceName = "MASCOTAS_INC", initialValue = 1, allocationSize = 1)

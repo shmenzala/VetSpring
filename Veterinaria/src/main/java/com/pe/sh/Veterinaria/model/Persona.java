@@ -4,6 +4,7 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.pe.sh.Veterinaria.configuration.StringKeyGenerator;
 import java.io.Serializable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,7 +29,7 @@ public class Persona implements Serializable{
     @Id
     @Column(name = "codigope")
     @GeneratedValue(generator = "inc_seqPer")
-    @GenericGenerator(name = "inc_seqPer", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
+    @GenericGenerator(name = "inc_seqPer", type = StringKeyGenerator.class,
             parameters = {@Parameter(name = "sqcName", value = "PERSONA_INC"),
                           @Parameter(name = "identificator_id", value = "PE")})
     @SequenceGenerator(name = "inc_seqPer", sequenceName = "PERSONA_INC", initialValue = 1, allocationSize = 1)

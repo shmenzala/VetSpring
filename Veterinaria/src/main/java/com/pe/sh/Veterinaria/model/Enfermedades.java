@@ -4,6 +4,7 @@
  */
 package com.pe.sh.Veterinaria.model;
 
+import com.pe.sh.Veterinaria.configuration.StringKeyGenerator;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class Enfermedades implements Serializable{
     @Id
     @Column(name = "codigoenf")
     @GeneratedValue(generator = "inc_seqEnf")
-    @GenericGenerator(name = "inc_seqEnf", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
+    @GenericGenerator(name = "inc_seqEnf", type = StringKeyGenerator.class,
             parameters = {@Parameter(name = "sqcName", value = "ENFERMEDADES_INC"),
                           @Parameter(name = "identificator_id", value = "EF")})
     @SequenceGenerator(name = "inc_seqEnf", sequenceName = "ENFERMEDADES_INC", initialValue = 1, allocationSize = 1)
