@@ -20,8 +20,13 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.List;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -29,33 +34,34 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name = "USUARIOS")
-public class Usuarios implements Serializable{
-    
+public class Usuarios implements Serializable {
+
     @Id
     @Column(name = "codigous")
     @GeneratedValue(generator = "inc_seqUsu")
     @GenericGenerator(name = "inc_seqUsu", strategy = "com.pe.sh.Veterinaria.configuration.StringKeyGenerator",
-            parameters = {@Parameter(name = "sqcName", value = "USUARIOS_INC"),
-                          @Parameter(name = "identificator_id", value = "US")})
+            parameters = {
+                @Parameter(name = "sqcName", value = "USUARIOS_INC"),
+                @Parameter(name = "identificator_id", value = "US")})
     @SequenceGenerator(name = "inc_seqUsu", sequenceName = "USUARIOS_INC", initialValue = 1, allocationSize = 1)
     private String id;
-    
+
     @Column(name = "nombreus")
     private String nombreus;
-    
+
     @Column(name = "contraus")
     private String contraus;
-    
+
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "codigove")
     private Veterinarios veterinario;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference
-    @JoinTable(name = "USUARIOS_ROLES", joinColumns = @JoinColumn(name = "codigous", referencedColumnName = "codigous")
-            , inverseJoinColumns = @JoinColumn(name = "codigorol", referencedColumnName = "codigorol"))
+    @JoinTable(name = "USUARIOS_ROLES", joinColumns = @JoinColumn(name = "codigous", referencedColumnName = "codigous"),
+            inverseJoinColumns = @JoinColumn(name = "codigorol", referencedColumnName = "codigorol"))
     private Set<Roles> roles = new HashSet<>();
-    
+
     public Usuarios() {
     }
 
@@ -105,7 +111,5 @@ public class Usuarios implements Serializable{
     public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
-    
-    
-    
+
 }

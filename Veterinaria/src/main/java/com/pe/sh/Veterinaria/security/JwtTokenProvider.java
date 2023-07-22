@@ -4,28 +4,25 @@
  */
 package com.pe.sh.Veterinaria.security;
 
-import com.pe.sh.Veterinaria.exceptions.VetAppException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author shmen
  */
-@Component
+@Service
 public class JwtTokenProvider {
     
     @Value("${app.jwt-secret}")
@@ -34,43 +31,57 @@ public class JwtTokenProvider {
     @Value("${app.jwt-expiration-milliseconds}")
     private int jwtExpirationInMs;
     
-    public String generarToken(Authentication authentication){
-        String username = authentication.getName();
-        List<String> roles = authentication.getAuthorities()
-                .stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        Date fechaActual = new Date();
-        Date fechaExpiracion = new Date(fechaActual.getTime() + jwtExpirationInMs);
-        
-        String token = Jwts.builder().setSubject(username)
-                .claim("roles", roles)
-                .setIssuedAt(new Date()).setExpiration(fechaExpiracion)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret.getBytes()).compact();
-        
-        return token;
-    }
-    
     public String obtenerUsernameDelJwt(String token){
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret.getBytes())
-                .parseClaimsJws(token).getBody();
-        
-        return claims.getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
     
-    public boolean validarToken(String token){
-        try {
-            Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException ex) {
-            throw new VetAppException(HttpStatus.BAD_REQUEST, "Firma JWT no válida.");
-        } catch (MalformedJwtException ex) {
-            throw new VetAppException(HttpStatus.BAD_REQUEST, "Token JWT no válida.");
-        } catch (ExpiredJwtException ex) {
-            throw new VetAppException(HttpStatus.BAD_REQUEST, "Token JWT caducado.");
-        } catch (UnsupportedJwtException ex) {
-            throw new VetAppException(HttpStatus.BAD_REQUEST, "Token JWT no compatible.");
-        } catch (IllegalArgumentException ex) {
-            throw new VetAppException(HttpStatus.BAD_REQUEST, "La cadena Claims JWT está vacía.");
-        }
+    public String generateToken(UserDetails userDetails){
+        return generateToken(new HashMap<>(), userDetails);
     }
+    
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
+                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+    
+    public boolean isTokenValid(String token, UserDetails userDetails){
+        final String username = obtenerUsernameDelJwt(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+    
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+    
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+    
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+    
+    private Claims extractAllClaims(String token){
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSigninKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Key getSigninKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    
     
 }

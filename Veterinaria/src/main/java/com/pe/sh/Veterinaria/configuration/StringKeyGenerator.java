@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -27,18 +29,15 @@ public class StringKeyGenerator implements IdentifierGenerator, Configurable{
 
     private String sqcName = "";
     private String identificator_id = "";
-
-    @Override
-    public Object generate(SharedSessionContractImplementor session, Object owner, Object currentValue, EventType eventType) {
-        return IdentifierGenerator.super.generate(session, owner, currentValue, eventType); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        session.
-    }
-    
-    
     
     @Override
     public Serializable generate(SharedSessionContractImplementor ssci, Object o) throws HibernateException {
-        Connection connection = ssci.;
+        Connection connection = null;
+        try {
+            connection = ssci.getJdbcConnectionAccess().obtainConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(StringKeyGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
         PreparedStatement ps = null;
         String result = "";
 
