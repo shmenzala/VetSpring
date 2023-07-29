@@ -33,38 +33,39 @@ public class UsuariosController {
     @Autowired
     private UsuariosService usuariosService;
     
-    @PreAuthorize("hasRole('ADMIN')")
+    
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<UsuariosDto> listarUsuarios(){
         return usuariosService.listarUsuarios();
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/veterinario/{codigove}/rol/{codigorol}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UsuariosDto> crearUsuario(@PathVariable(value = "codigove") String id,
                                                     @PathVariable(value = "codigorol") String codigorol,
                                                     @RequestBody UsuariosDto usuDto){
         return new ResponseEntity<>(usuariosService.crearUsuario(codigorol, id, usuDto), HttpStatus.CREATED);
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}/veterinario/{codigove}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UsuariosDto> obtenerUsuarioPorId(@PathVariable(value = "id") String id, @PathVariable(value = "codigove") String codigope){
         UsuariosDto usuDto = usuariosService.obtenerUsuarioPorId(id, codigope);
         
         return new ResponseEntity<>(usuDto, HttpStatus.OK);
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/veterinario/{codigove}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UsuariosDto> actualizarUsuario(@PathVariable(value = "id") String id, @PathVariable(value = "codigove") String codigope, @RequestBody UsuariosDto usuDto){
         UsuariosDto usuarioActualizado = usuariosService.actualizarUsuario(usuDto, id, codigope);
         
         return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}/veterinario/{codigove}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> eliminarUsuario(@PathVariable(value = "id") String id, @PathVariable(value = "codigove") String codigope) {
         usuariosService.eliminarUsuario(id, codigope);
         return new ResponseEntity<>("Usuario eliminada con éxito", HttpStatus.OK);

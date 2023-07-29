@@ -4,20 +4,21 @@
  */
 package com.pe.sh.Veterinaria.util;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 
 /**
  *
  * @author shmen
  */
 public class PasswordEncoderGenerator {
-    
+
     public static void main(String[] args) {
-        
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("admin"));
+
+//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        System.out.println(passwordEncoder.encode("admin"));
         
     }
-    
+
 }

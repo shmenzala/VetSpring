@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     @Autowired
     private UsuariosRepository usuariosRepository;
-    
+
     @Override
     public UserDetails loadUserByUsername(String nombreus) throws UsernameNotFoundException {
         Usuarios usuario = usuariosRepository.findByNombreus(nombreus)
@@ -45,24 +45,6 @@ public class CustomUserDetailsService implements UserDetailsService{
     
     private Collection<? extends GrantedAuthority> mapearRoles(Set<Roles> roles){
         return roles.stream().map(rol -> new SimpleGrantedAuthority(rol.getNombre())).collect(Collectors.toList());
-    }
-    
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(this);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
+    }    
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
-        return authConfig.getAuthenticationManager();
-    }
-    
-    @Bean
-    private PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
 }

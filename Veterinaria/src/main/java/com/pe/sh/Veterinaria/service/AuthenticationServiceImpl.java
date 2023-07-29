@@ -7,7 +7,6 @@ package com.pe.sh.Veterinaria.service;
 import com.pe.sh.Veterinaria.dto.JwtAuthResponseDto_;
 import com.pe.sh.Veterinaria.dto.LoginDto_;
 import com.pe.sh.Veterinaria.dto.RegisterDto_;
-import com.pe.sh.Veterinaria.dto.UsuariosDto;
 import com.pe.sh.Veterinaria.exceptions.ResourceNotFoundException;
 import com.pe.sh.Veterinaria.exceptions.VetAppException;
 import com.pe.sh.Veterinaria.model.Roles;
@@ -24,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (usuariosRepository.existsByNombreus(regDto.getUsername())) {
             throw new VetAppException(HttpStatus.BAD_REQUEST, "Ese nombre de usuario ya existe");
         }
-
+        
         Usuarios usuario = new Usuarios();
         usuario.setNombreus(regDto.getUsername());
         usuario.setContraus(passwordEncoder.encode(regDto.getPassword()));
@@ -77,7 +75,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         usuariosRepository.save(usuario);
 
-        String token = jwtTokenProvider.generateToken((UserDetails) usuario);
+        String token = jwtTokenProvider.generateToken(usuario);
 
         return new JwtAuthResponseDto_(token);
     }
@@ -90,11 +88,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         logDto.getPassword()
                 )
         );
-        
-        var user = usuariosRepository.findByNombreus(logDto.getUsername())
+
+        Usuarios usuario = usuariosRepository.findByNombreus(logDto.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         
-        String token = jwtTokenProvider.generateToken((UserDetails) user);
+        System.out.println("AUTORIDADES DEL USER ADMIN " + usuario.getAuthorities());
+        
+        String token = jwtTokenProvider.generateToken(usuario);
         return new JwtAuthResponseDto_(token);
     }
 

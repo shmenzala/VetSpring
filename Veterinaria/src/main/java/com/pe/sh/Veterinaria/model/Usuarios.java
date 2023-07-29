@@ -23,6 +23,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,7 +36,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Entity
 @Table(name = "USUARIOS")
-public class Usuarios implements Serializable {
+public class Usuarios implements UserDetails {
 
     @Id
     @Column(name = "codigous")
@@ -111,6 +112,47 @@ public class Usuarios implements Serializable {
 
     public void setRoles(Set<Roles> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //return roles.stream().map(rol -> new SimpleGrantedAuthority(rol.getNombre())).collect(Collectors.toList());
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (var r : this.roles) {
+            var sga = new SimpleGrantedAuthority(r.getNombre());
+            authorities.add(sga);
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return contraus;
+    }
+
+    @Override
+    public String getUsername() {
+        return nombreus;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

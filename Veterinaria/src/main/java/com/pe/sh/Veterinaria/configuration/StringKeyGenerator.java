@@ -31,13 +31,14 @@ public class StringKeyGenerator implements IdentifierGenerator, Configurable{
     private String identificator_id = "";
     
     @Override
-    public Serializable generate(SharedSessionContractImplementor ssci, Object o) throws HibernateException {
+    public Object generate(SharedSessionContractImplementor ssci, Object o) throws HibernateException {
         Connection connection = null;
         try {
             connection = ssci.getJdbcConnectionAccess().obtainConnection();
         } catch (SQLException ex) {
             Logger.getLogger(StringKeyGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         PreparedStatement ps = null;
         String result = "";
 
@@ -65,7 +66,7 @@ public class StringKeyGenerator implements IdentifierGenerator, Configurable{
         }
         return result;
     }
-
+    
     @Override
     public void configure(Type type, Properties prprts, ServiceRegistry sr) throws MappingException {
         sqcName = prprts.getProperty("sqcName");

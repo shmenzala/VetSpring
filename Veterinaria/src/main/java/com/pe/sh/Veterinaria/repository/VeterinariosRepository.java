@@ -15,7 +15,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface VeterinariosRepository extends JpaRepository<Veterinarios, String>{
     
-    @Query("select count(codigope) from Cliente where codigope=:codigope")
+    @Query(value = "select count(codigope) from Cliente where codigope=:codigope", nativeQuery = true)
     long coincidenciaPersonaCliente(@Param("codigope") String codigope);
     
 }

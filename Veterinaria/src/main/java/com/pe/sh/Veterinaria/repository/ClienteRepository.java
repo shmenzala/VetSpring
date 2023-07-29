@@ -20,7 +20,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, String>{
     
     List<Cliente> findByMascotasId(String codigoma);
     
-    @Query("select count(codigope) from Veterinarios where codigope=:codigope")
+    @Query(value = "select count(codigope) from Veterinarios where codigope=:codigope", nativeQuery = true)
     long coincidenciaPersonaVeterinario(@Param("codigope") String codigope);
     
 }
