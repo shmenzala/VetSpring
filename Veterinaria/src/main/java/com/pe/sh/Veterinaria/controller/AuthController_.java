@@ -7,16 +7,9 @@ package com.pe.sh.Veterinaria.controller;
 import com.pe.sh.Veterinaria.dto.JwtAuthResponseDto_;
 import com.pe.sh.Veterinaria.dto.LoginDto_;
 import com.pe.sh.Veterinaria.dto.RegisterDto_;
-import com.pe.sh.Veterinaria.security.JwtTokenProvider;
 import com.pe.sh.Veterinaria.service.AuthenticationService;
-import org.apache.naming.ServiceRef;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,12 +27,6 @@ public class AuthController_ {
 
     @Autowired
     private AuthenticationService authenticationService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     public ResponseEntity<JwtAuthResponseDto_> registerUser(@RequestBody RegisterDto_ regDto) {

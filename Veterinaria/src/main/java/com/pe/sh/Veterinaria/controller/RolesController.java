@@ -31,25 +31,25 @@ public class RolesController {
     @Autowired
     private RolesService rolesService;
     
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<RolesDto> listarRoles(){
         return rolesService.listarRoles();
     }
     
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<RolesDto> crearRol(@RequestBody RolesDto rolDto){
         return new ResponseEntity<>(rolesService.crearRol(rolDto), HttpStatus.CREATED);
     }
     
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{codigorol}")
     public ResponseEntity<RolesDto> obtenerRolPorId(@PathVariable(value = "codigorol") String codigorol){
         return ResponseEntity.ok(rolesService.obtenerRolesPorId(codigorol));
     }
     
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{codigorol}")
     public ResponseEntity<RolesDto> actualizarRol(@RequestBody RolesDto rolDto, @PathVariable(value = "codigorol") String codigorol){
         RolesDto rolRespuesta = rolesService.actualizarRol(rolDto, codigorol);
@@ -57,7 +57,7 @@ public class RolesController {
         return new ResponseEntity<>(rolRespuesta, HttpStatus.OK);
     }
     
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{codigorol}")
     public ResponseEntity<String> eliminarRol(@PathVariable(value = "codigorol") String codigorol){
         rolesService.eliminarRol(codigorol);

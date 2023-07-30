@@ -12,9 +12,12 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,7 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
     
     public String obtenerUsernameDelJwt(String token){
+        System.out.println("OBTENIENDO USERNAME");
         return extractClaim(token, Claims::getSubject);
     }
     
@@ -40,11 +44,12 @@ public class JwtTokenProvider {
     }
     
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+        System.out.println("CREANDO TOKEN");
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .claim("roles", userDetails.getAuthorities())
+                .claim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256)
@@ -53,6 +58,7 @@ public class JwtTokenProvider {
     
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String username = obtenerUsernameDelJwt(token);
+        System.out.println("isTokenValid => " + username + "ES IGUAL A " + userDetails.getUsername());
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
     

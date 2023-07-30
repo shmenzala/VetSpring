@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,9 +35,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private UsuariosRepository usuariosRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Autowired
     private VeterinariosRepository veterinariosRepository;
@@ -92,6 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Usuarios usuario = usuariosRepository.findByNombreus(logDto.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         
+        usuario.getRoles().forEach((rol)-> System.out.println(rol.getNombre()));
         System.out.println("AUTORIDADES DEL USER ADMIN " + usuario.getAuthorities());
         
         String token = jwtTokenProvider.generateToken(usuario);

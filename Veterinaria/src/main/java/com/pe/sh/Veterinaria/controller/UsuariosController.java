@@ -35,13 +35,13 @@ public class UsuariosController {
     
     
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UsuariosDto> listarUsuarios(){
         return usuariosService.listarUsuarios();
     }
     
     @PostMapping("/veterinario/{codigove}/rol/{codigorol}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuariosDto> crearUsuario(@PathVariable(value = "codigove") String id,
                                                     @PathVariable(value = "codigorol") String codigorol,
                                                     @RequestBody UsuariosDto usuDto){
@@ -49,7 +49,7 @@ public class UsuariosController {
     }
     
     @GetMapping("/{id}/veterinario/{codigove}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuariosDto> obtenerUsuarioPorId(@PathVariable(value = "id") String id, @PathVariable(value = "codigove") String codigope){
         UsuariosDto usuDto = usuariosService.obtenerUsuarioPorId(id, codigope);
         
@@ -57,7 +57,7 @@ public class UsuariosController {
     }
     
     @PutMapping("/{id}/veterinario/{codigove}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuariosDto> actualizarUsuario(@PathVariable(value = "id") String id, @PathVariable(value = "codigove") String codigope, @RequestBody UsuariosDto usuDto){
         UsuariosDto usuarioActualizado = usuariosService.actualizarUsuario(usuDto, id, codigope);
         
@@ -65,7 +65,7 @@ public class UsuariosController {
     }
     
     @DeleteMapping("/{id}/veterinario/{codigove}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> eliminarUsuario(@PathVariable(value = "id") String id, @PathVariable(value = "codigove") String codigope) {
         usuariosService.eliminarUsuario(id, codigope);
         return new ResponseEntity<>("Usuario eliminada con éxito", HttpStatus.OK);

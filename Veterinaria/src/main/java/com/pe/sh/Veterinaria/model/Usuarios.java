@@ -155,4 +155,11 @@ public class Usuarios implements UserDetails {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Usuarios{" + "id=" + id + ", nombreus=" + nombreus + ", contraus=" + contraus + ", veterinario=" + veterinario + ", roles=" + roles + '}';
+    }
+
+    
+    
 }
