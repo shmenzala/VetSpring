@@ -17,6 +17,8 @@ import com.pe.sh.Veterinaria.repository.UsuariosRepository;
 import com.pe.sh.Veterinaria.repository.VeterinariosRepository;
 import com.pe.sh.Veterinaria.security.JwtTokenProvider;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

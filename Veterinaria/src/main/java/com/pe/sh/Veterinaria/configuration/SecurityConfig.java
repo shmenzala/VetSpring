@@ -58,8 +58,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                             .requestMatchers("/api/auth/**").permitAll()
-                            .anyRequest()
-                            .authenticated();
+                            .anyRequest().authenticated();
                 })
                 .exceptionHandling((excphand) -> {
                     excphand.authenticationEntryPoint(jwtAuthenticationEntryPoint);
